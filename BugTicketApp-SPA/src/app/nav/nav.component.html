@@ -1,6 +1,14 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
   <div class="container">
     <a class="navbar-brand" >Safari Security</a>
+    <ul class="navbar-nav mr-auto" *ngIf="loggedIn()">
+      <li *appHasRole="['Admin', 'Moderator']" class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/admin']" >Admin</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/tickets']" >Tickets</a>
+      </li>
+    </ul>
     <div *ngIf="loggedIn()">
         <h2>Welcome {{ authService.decodedToken?.unique_name | titlecase }}</h2>
         <a class="logout" (click)="logout()">Logout</a>

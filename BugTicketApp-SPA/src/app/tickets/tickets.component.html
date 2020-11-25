@@ -66,11 +66,19 @@
                   </tr>
                 <tr>
                     <td style="vertical-align: middle; font-weight: bold">Status:</td>
-                    <td><input id="createdBy" type="text" class="form-control" [(ngModel)]="tic.status" name="status" #id="ngModel"></td>
+                    <td><select [(ngModel)]="tic.status" name="status" #id="ngModel" id="status">
+                      <option value="open">Open</option>
+                      <option value="resolved">Resolved</option>
+                      <option value="closed">Closed</option>
+                    </select></td> 
                   </tr> 
                   <tr>
                     <td style="vertical-align: middle; font-weight: bold">Priority:</td>
-                    <td><input id="createdBy" type="text" class="form-control" [(ngModel)]="tic.priority" name="priority" #id="ngModel"></td>
+                    <td><select [(ngModel)]="tic.priority" name="priority" #id="ngModel" id="priority">
+                      <option value="high">High</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </select></td> 
                   </tr> 
                  
               </table>

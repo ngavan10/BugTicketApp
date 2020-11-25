@@ -57,7 +57,11 @@ createRow(index: any, modal) {
 
 create(tick) {
   this.tickets[this.index] = tick;
-  this.ticketService.createTicket(this.tic).subscribe(() => this.close());
+  this.ticketService.createTicket(this.tic).subscribe(() =>{
+    this.close();
+  }, error => {
+    this.alertify.error(error);
+  });
 }
 
 close(): void {

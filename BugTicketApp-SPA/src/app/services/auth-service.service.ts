@@ -36,7 +36,7 @@ constructor(private http: HttpClient) { }
  }
 
 register(user: User) {
-  // return this.http.post(this.baseUrl + 'register', user);
+  return this.http.post(environment.apiUrl + 'admin/register', user);
 }
 
 loggedIn() {
@@ -44,15 +44,15 @@ loggedIn() {
   return !this.jwtHelper.isTokenExpired(token);
 }
 
-// roleMatch(allowedRoles): boolean {
-//   let isMatch = false;
-//   const userRoles = this.decodedToken.role as Array<string>;
-//   allowedRoles.forEach(element => {
-//     if (userRoles.includes(element)) {
-//       isMatch = true;
-//       return;
-//     }
-//   });
-//   return isMatch;
-// }
+roleMatch(allowedRoles): boolean {
+  let isMatch = false;
+  const userRoles = this.decodedToken.role as Array<string>;
+  allowedRoles.forEach(element => {
+    if (userRoles.includes(element)) {
+      isMatch = true;
+      return;
+    }
+  });
+  return isMatch;
+}
 }

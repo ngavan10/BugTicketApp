@@ -16,6 +16,12 @@ import { TicketsComponent } from './tickets/tickets.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { ErrorInterceptorProvider } from './services/error.interceptor';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { HasRoleDirective } from '../app/_directives/hasRole.directive';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
+import { RegisterComponent } from './admin/register/register.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -26,7 +32,12 @@ export function tokenGetter() {
     AppComponent,
     NavComponent,
     HomeComponent,
-    TicketsComponent
+    TicketsComponent,
+    HasRoleDirective,
+    AdminPanelComponent,
+    UserManagementComponent,
+    RolesModalComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +45,7 @@ export function tokenGetter() {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TabsModule.forRoot(),
     ModalModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
@@ -50,6 +62,9 @@ export function tokenGetter() {
     AuthGuard,
     ErrorInterceptorProvider
   ],
+  entryComponents: [
+    RolesModalComponent
+ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

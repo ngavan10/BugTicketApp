@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nathangavan/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj": {}
+    "/Users/nathangavan/WebApp/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj": {}
   },
   "projects": {
-    "/Users/nathangavan/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj": {
+    "/Users/nathangavan/WebApp/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nathangavan/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj",
+        "projectUniqueName": "/Users/nathangavan/WebApp/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj",
         "projectName": "BugTicketApp.API",
-        "projectPath": "/Users/nathangavan/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj",
+        "projectPath": "/Users/nathangavan/WebApp/BugTicketApp/BugTicketApp.API/BugTicketApp.API.csproj",
         "packagesPath": "/Users/nathangavan/.nuget/packages/",
-        "outputPath": "/Users/nathangavan/BugTicketApp/BugTicketApp.API/obj/",
+        "outputPath": "/Users/nathangavan/WebApp/BugTicketApp/BugTicketApp.API/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/nathangavan/.nuget/NuGet/NuGet.Config"
@@ -41,6 +41,10 @@
               "version": "[7.0.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.0.0, )"
             },

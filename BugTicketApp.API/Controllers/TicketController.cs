@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using BugTicketApp.API.Data;
@@ -58,12 +59,24 @@ namespace BugTicketApp.API.Controllers
             
         }
 
+         [HttpGet("{id}", Name = "GetUser")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == id;
+            var user = await _repo.GetUser(id);
+            var userToReturn = _mapper.Map<UserForReturnDto>(user);
+            return Ok(userToReturn);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketForCreationDto ticketForCreationDto)
         {
-
+            
             var ticket = _mapper.Map<Ticket>(ticketForCreationDto);
             ticket.UserId =  Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
+            ticket.Description = Regex.Replace(ticket.Description, "[^0-9A-Za-z]+", " ");
+
            
             _repo.Add(ticket);
 
