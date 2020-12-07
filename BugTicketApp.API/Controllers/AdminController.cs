@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using BugTicketApp.API.Data;
@@ -92,7 +94,7 @@ namespace BugTicketApp.API.Controllers
 
             if (result.Succeeded)
             {
-                return CreatedAtRoute("GetUser", new { controller = "Ticket", id = userToCreate.Id }, userToReturn);
+                return CreatedAtRoute("GetUser", new { controller = "Users", id = userToCreate.Id }, userToReturn);
             }
 
             return BadRequest(result.Errors);

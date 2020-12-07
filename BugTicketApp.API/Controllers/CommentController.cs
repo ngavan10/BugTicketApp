@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using BugTicketApp.API.Data;
@@ -13,8 +14,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BugTicketApp.API.Controllers
 {
-    [Authorize]
-    [Route("api/ticket/{ticketNumber}/[controller]")]
+
+    [Route("api/ticket/{ticketId}/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase
     {
@@ -30,35 +31,43 @@ namespace BugTicketApp.API.Controllers
             _repo = repo;
         }
 
-        //   [HttpGet("{id}", Name = "GetComment")]
-        // public async Task<IActionResult> GetComment(int ticketNumber, int id)
-        // {
-        //     // if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //     //     return Unauthorized();
+          [HttpGet("{id}", Name = "GetComment")]
+        public async Task<IActionResult> GetComment(int ticketNumber, int id)
+        {
+            // if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            //     return Unauthorized();
 
-        //   var photoFromRepo = await _repo.GetComment(id);
+          var photoFromRepo = await _repo.GetComment(id);
 
-        //     var photo = _mapper.Map<CommentForReturnDto>(photoFromRepo);
+            var photo = _mapper.Map<CommentForReturnDto>(photoFromRepo);
 
-        //     return Ok(photo);
+            return Ok(photo);
 
             
             
-        // }
+        }
 
          
         [HttpPost]
-        public async Task<IActionResult> CreateComment(int ticketNumber, CommentForCreationDto commentForCreationDto)
+        public async Task<IActionResult> CreateComment(CommentForCreationDto commentForCreationDto)
         {
-            var creator = await _repo.GetTicket(ticketNumber);
+            
 
             // if (creator.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             //     return Unauthorized();
 
-            //commentForCreationDto.UserId = userId;
+         
 
             var comment = _mapper.Map<Comment>(commentForCreationDto);
-            
+            comment.UserId =  Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+              var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+
+            if(!regexItem.IsMatch(comment.Description))
+            {
+                throw new Exception("Description invalid");
+            }
+
             _repo.Add(comment);
 
            
@@ -68,7 +77,7 @@ namespace BugTicketApp.API.Controllers
                 var commentToReturn = _mapper.Map<CommentForReturnDto>(comment);
                 //commentToReturn.UserName = comment.User.Username;
                 return CreatedAtRoute("GetComment",
-                    new {ticketNumber, id = comment.Id}, commentToReturn);
+                    new {comment.TicketId ,id = comment.Id}, commentToReturn);
             }
                  
 

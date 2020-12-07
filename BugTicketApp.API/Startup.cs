@@ -35,7 +35,6 @@ namespace BugTicketApp.API
         }
 
         public IConfiguration Configuration { get; }
-
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>( x => {
@@ -131,13 +130,13 @@ namespace BugTicketApp.API
 
            
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            
 
             app.UseAuthentication();
 
             app.UseAuthorization();
 
-            
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             
             //app.UseSession();
             app.UseDefaultFiles();

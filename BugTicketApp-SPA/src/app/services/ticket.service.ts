@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Ticket } from '../_models/Ticket';
+import { Comment } from '../_models/Comment';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { User } from '../_models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +31,15 @@ export class TicketService {
   }
 
   createTicket(ticket: Ticket) {
-      return this.http.post(this.baseUrl + 'ticket' + '/', ticket)
-      .pipe(
-        tap(() => this.refreshData.next()));
-    };
+      return this.http.post(this.baseUrl + 'ticket' + '/', ticket);
+    }
+
+    createComment(comment: Comment) {
+      return this.http.post(this.baseUrl + 'ticket/' + comment.ticketId + '/comment', comment);
+    }
+
+    getUsers() {
+      return this.http.get<User[]>(this.baseUrl + 'users');
+    }
   }
 

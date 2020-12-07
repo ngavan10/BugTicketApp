@@ -18,9 +18,7 @@ namespace BugTicketApp.API.Data
                 var roles = new List<Role>
                 {
                     new Role{Name = "Member"},
-                    new Role{Name = "Admin"},
-                    new Role{Name = "Moderator"},
-                    new Role{Name = "VIP"}
+                    new Role{Name = "Admin"}
                 };
 
                 foreach (var role in roles)
@@ -30,7 +28,8 @@ namespace BugTicketApp.API.Data
 
                 foreach(var user in users)
                 {
-                    userManager.CreateAsync(user, "password").Wait();
+                    
+                    userManager.CreateAsync(user, "P4rty>T1m3").Wait();
                     userManager.AddToRoleAsync(user, "Member");
                 }
 
@@ -39,7 +38,7 @@ namespace BugTicketApp.API.Data
                     UserName = "Admin"
                 };
 
-                var result = userManager.CreateAsync(adminUser, "password").Result;
+                var result = userManager.CreateAsync(adminUser, "<Bu9>Tr4ck3r").Result;
 
                 if (result.Succeeded)
                 {
@@ -48,7 +47,6 @@ namespace BugTicketApp.API.Data
                 }
             }
         }
-
          public static void SeedTickets(DataContext context)
         {
             if(!context.Tickets.Any())

@@ -3,6 +3,7 @@ export interface Ticket {
     ticketNumber: number;
     description: string;
     status: string;
+    assignedTo: string;
     priority: string;
     comments: Comment[];
     userName: string;

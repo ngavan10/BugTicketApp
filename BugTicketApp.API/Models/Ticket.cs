@@ -12,6 +12,8 @@ namespace BugTicketApp.API.Models
         public string Description {get; set;}
         public string Status {get;set;}
         public string Priority {get;set;}
+        
+        public string AssignedTo {get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual User User { get; set; }
         public int UserId { get; set; }

@@ -4,6 +4,7 @@
     "Description": "Bug found in C# code", 
     "Status": "Open",
     "Priority": "High",
+    "AssignedTo": "Gary",
     "UserId": 1
 
 },
@@ -12,6 +13,7 @@
     "Description": "Bug found in Java code", 
     "Status": "Open",
     "Priority": "High",
+    "AssignedTo": "Gary",
     "UserId": 1
 
 }

@@ -51,6 +51,10 @@ namespace BugTicketApp.API.Controllers
             // var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             var user = await _userManager.FindByNameAsync(userForLoginDto.Username);
 
+            if(user == null) {
+                throw new Exception("No user exists");
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
 
             if (result.Succeeded)

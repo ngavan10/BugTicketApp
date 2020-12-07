@@ -11,6 +11,7 @@ namespace BugTicketApp.API.Data
          Task<bool> SaveAll();
 
          Task<IEnumerable<Ticket>> GetTickets();
+         Task<IEnumerable<User>> GetUsers();
 
          Task<Ticket> GetTicket(int id);
 

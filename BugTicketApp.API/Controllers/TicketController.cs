@@ -14,19 +14,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BugTicketApp.API.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class TicketController : ControllerBase
     {
        
-        
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly ITicketRepository _repo;
 
         public TicketController(DataContext context, ITicketRepository repo, IMapper mapper)
         {
-            
+            _context = context;
             _mapper = mapper;
             _repo = repo;
         }
@@ -41,6 +41,25 @@ namespace BugTicketApp.API.Controllers
             return Ok(ticketsToReturn);
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsersWithRoles()
+        {
+            var userList = await _context.Users
+                .OrderBy(x => x.UserName)
+                .Select(user => new
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Roles = (from userRole in user.UserRoles
+                             join role in _context.Roles
+                             on userRole.RoleId
+                             equals role.Id
+                             select role.Name).ToList()
+                }).ToListAsync();
+
+            return Ok(userList);
+        }
+
 
 
         
@@ -50,22 +69,11 @@ namespace BugTicketApp.API.Controllers
         {
         
           var ticketFromRepo = await _repo.GetTicket(id);
-            var ticket = _mapper.Map<TicketForListDto>(ticketFromRepo);
+        var ticket = _mapper.Map<TicketForListDto>(ticketFromRepo);
             
-
             return Ok(ticket);
 
             
-            
-        }
-
-         [HttpGet("{id}", Name = "GetUser")]
-        public async Task<IActionResult> GetUser(int id)
-        {
-            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == id;
-            var user = await _repo.GetUser(id);
-            var userToReturn = _mapper.Map<UserForReturnDto>(user);
-            return Ok(userToReturn);
         }
 
         [HttpPost]
@@ -75,8 +83,13 @@ namespace BugTicketApp.API.Controllers
             var ticket = _mapper.Map<Ticket>(ticketForCreationDto);
             ticket.UserId =  Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             
-            ticket.Description = Regex.Replace(ticket.Description, "[^0-9A-Za-z]+", " ");
+            //ticket.Description = Regex.Replace(ticket.Description, "[^0-9A-Za-z]+", " ");
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
 
+            if(!regexItem.IsMatch(ticket.Description))
+            {
+                throw new Exception("Description invalid");
+            }
            
             _repo.Add(ticket);
 
@@ -85,7 +98,7 @@ namespace BugTicketApp.API.Controllers
             {
                 var ticketToReturn = _mapper.Map<TicketForListDto>(ticket);
                 ticketToReturn.UserName = User.Identity.Name;
-                ticketToReturn.TicketNumber = ticketToReturn.Id;
+                ticketToReturn.TicketNumber = ticket.Id;
                 return CreatedAtRoute("GetTicket",
                     new {id = ticket.Id}, ticketToReturn);
             }

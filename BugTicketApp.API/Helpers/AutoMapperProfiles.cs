@@ -9,12 +9,13 @@ namespace BugTicketApp.API.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Ticket, TicketForListDto>();
-            //.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserRoles));
+            CreateMap<Ticket, TicketForListDto>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
             CreateMap<TicketForUpdateDto, Ticket>();
             CreateMap<CommentForCreationDto, Comment>().ReverseMap();
             CreateMap<UserForRegisterDto, User>();
-            //CreateMap<Comment, CommentForReturnDto>().ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username));;
+            CreateMap<Comment, CommentForReturnDto>().ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName));;
+            //CreateMap<Comment, CommentForReturnDto>();
             CreateMap<User, UserForReturnDto>();
             CreateMap<TicketForCreationDto, Ticket>();
         }

@@ -4,6 +4,7 @@ import { AlertifyService } from '../services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { Ticket } from '../_models/Ticket';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { User } from '../_models/User';
 
 @Component({
   selector: 'app-tickets',
@@ -13,10 +14,12 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class TicketsComponent implements OnInit {
 
   tickets: Ticket[];
+  users: User[];
   modalRef: BsModalRef;
   ticket: Ticket;
   index;
   tic: any;
+  comm: any;
   comment;
   commentList: any = [];
   comments: Comment[];
@@ -29,6 +32,7 @@ export class TicketsComponent implements OnInit {
 
   ngOnInit() {
     this.loadTickets();
+    this.loadUsers();
   }
 
   loadTickets() {
@@ -37,6 +41,12 @@ export class TicketsComponent implements OnInit {
 
       );
   }
+
+  loadUsers() {
+    return this.ticketService.getUsers().subscribe(user => 
+      this.users = user);
+  }
+
 
   getComments(ticketNumber: number) {
     this.commentList = [];
@@ -55,9 +65,26 @@ createRow(index: any, modal) {
   this.modalRef = this.modalService.show(modal, Object.assign({}, { class: 'gray modal-lg'}));
 }
 
+createCommentModal(index: any, modal, ticketId: number) {
+  this.index = index;
+  this.comm = { ...this.comments[index], ticketId};
+  this.modalRef = this.modalService.show(modal, Object.assign({}, { class: 'gray modal-lg'}));
+}
+
+createComment(comm) {
+  this.comments[this.index] = comm;
+  this.ticketService.createComment(this.comm).subscribe(() => {
+    this.rowSelected = false;
+    this.close();
+  }, error => {
+    this.alertify.error(error);
+  })
+}
+
 create(tick) {
   this.tickets[this.index] = tick;
   this.ticketService.createTicket(this.tic).subscribe(() =>{
+    this.loadTickets();
     this.close();
   }, error => {
     this.alertify.error(error);

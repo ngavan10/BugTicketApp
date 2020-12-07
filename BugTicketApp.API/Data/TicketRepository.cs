@@ -37,6 +37,12 @@ namespace BugTicketApp.API.Data
               return tickets;     
         }
 
+        public async Task<IEnumerable<User>> GetUsers() 
+        {
+            var users = await _context.Users.ToListAsync();
+            return users;
+        }
+
         public async Task<User> GetUser(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
